@@ -1,0 +1,31 @@
+# ASP.NET Core
+.vs/
+.vscode/
+.idea/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Configuration files
+appsettings.Development.json
+appsettings.Production.json
+appsettings.json
+
+# Entity Framework
+Database/
+
+# Logs
+*.log
+
+# Secrets
+secrets/
+
+# Build files
+*.dll
+*.exe
+*.pdb
+*.cache
+
