@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuração DB
+DotNetEnv.Env.Load();
+Console.WriteLine("DATABASE_CONNECTION_STRING");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
