@@ -5,20 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 public class BoletoController : ControllerBase
 {
     private readonly IBoletoService _boletoService;
+    private readonly IBancoService _bancoService;
 
-    public BoletoController(IBoletoService boletoService)
+    public BoletoController(IBoletoService boletoService, IBancoService bancoService)
     {
         _boletoService = boletoService;
-    }
-
-    [HttpGet]
-    public IActionResult Boleto()
-    {
-        var boleto = new Boleto();
-        if (boleto == null)
-            return NotFound();
-
-        return Ok(boleto);
+        _bancoService = bancoService;
     }
 
     [HttpGet("{id}")]
@@ -34,6 +26,10 @@ public class BoletoController : ControllerBase
     [HttpPost]
     public IActionResult CreateBoleto(Boleto boleto)
     {
+        var banco = _bancoService.GetById(boleto.BancoId);
+        if (banco == null || banco.Id == 0)
+            return NotFound("Banco não encontrado.");
+
         _boletoService.Create(boleto);
         return CreatedAtAction(nameof(GetBoleto), new { id = boleto.Id }, boleto);
     }

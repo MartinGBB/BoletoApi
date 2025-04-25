@@ -14,6 +14,11 @@ public class BancoService : IBancoService
         return new Banco();
     }
 
+    public Banco GetById(int id)
+    {
+        return new Banco();
+    }
+
     public void Create(Banco banco)
     {
         _context.Bancos.Add(banco);
