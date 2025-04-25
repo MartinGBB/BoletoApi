@@ -26,12 +26,35 @@ public class BoletoController : ControllerBase
     {
         try
         {
+            if (!ModelState.IsValid)
+            {
+                var firstError = ModelState.Values.SelectMany(v => v.Errors).FirstOrDefault();
+                if (firstError != null)
+                {
+                    var errorMessage = $"O campo {firstError.Exception?.Source ?? firstError.ErrorMessage}";
+                    return BadRequest(new
+                    {
+                        type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                        title = "One or more validation errors occurred.",
+                        status = 400,
+                        traceId = HttpContext.TraceIdentifier,
+                        errors = new { firstError.ErrorMessage }
+                    });
+                }
+                return BadRequest("Dados inválidos.");
+            }
+
             var createdBoleto = _boletoService.Create(boleto);
-            return CreatedAtAction(nameof(BuscarPorId), new { id = createdBoleto.Id }, "BancoId: " + createdBoleto.Id);
+            return CreatedAtAction(nameof(BuscarPorId), new { id = createdBoleto.Id }, createdBoleto);
         }
         catch (KeyNotFoundException ex)
         {
             return NotFound(ex.Message);
         }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Erro inesperado: " + ex.Message);
+        }
     }
+
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,12 @@ public class BoletoService : IBoletoService
             throw new KeyNotFoundException("Banco não encontrado");
 
         var boleto = _mapper.Map<Boleto>(boletoDto);
+
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(boleto);
+        if (!Validator.TryValidateObject(boleto, validationContext, validationResults, true))
+            throw new ValidationException("Dados inválidos: " + string.Join(", ", validationResults.Select(v => v.ErrorMessage)));
+
         boleto.DataVencimento = boleto.DataVencimento.ToUniversalTime();
         if (boleto.DataVencimento < DateTime.Now)
             boleto.Valor += banco.PercentualJuros;
