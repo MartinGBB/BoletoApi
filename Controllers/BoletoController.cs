@@ -12,7 +12,7 @@ public class BoletoController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetBoleto(int id)
+    public IActionResult BuscarPorId(int id)
     {
         var boleto = _boletoService.GetById(id);
         if (boleto == null)
@@ -22,12 +22,12 @@ public class BoletoController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateBoleto(Boleto boleto)
+    public IActionResult Criar(BoletoDto boleto)
     {
         try
         {
             var createdBoleto = _boletoService.Create(boleto);
-            return CreatedAtAction(nameof(GetBoleto), new { id = createdBoleto.Id }, createdBoleto);
+            return CreatedAtAction(nameof(BuscarPorId), new { id = createdBoleto.Id }, createdBoleto);
         }
         catch (KeyNotFoundException ex)
         {
