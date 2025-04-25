@@ -27,7 +27,7 @@ public class BoletoController : ControllerBase
         try
         {
             var createdBoleto = _boletoService.Create(boleto);
-            return CreatedAtAction(nameof(BuscarPorId), new { id = createdBoleto.Id }, createdBoleto);
+            return CreatedAtAction(nameof(BuscarPorId), new { id = createdBoleto.Id }, "BancoId: " + createdBoleto.Id);
         }
         catch (KeyNotFoundException ex)
         {

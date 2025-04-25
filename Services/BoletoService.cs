@@ -29,7 +29,7 @@ public class BoletoService : IBoletoService
             throw new KeyNotFoundException("Banco não encontrado");
 
         var boleto = _mapper.Map<Boleto>(boletoDto);
-
+        boleto.DataVencimento = boleto.DataVencimento.ToUniversalTime();
         if (boleto.DataVencimento < DateTime.Now)
             boleto.Valor += banco.PercentualJuros;
 

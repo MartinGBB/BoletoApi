@@ -9,7 +9,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 Console.WriteLine($"Connection String: {Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")}");
-builder.Services.AddAutoMapper(typeof(Program));
+// builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Serviços
 builder.Services.AddScoped<IBoletoService, BoletoService>();
