@@ -14,9 +14,7 @@ public class BoletoService : IBoletoService
 
     public BoletoDto GetById(int id)
     {
-        var boleto = _context.Boletos
-            .Include(b => b.Banco)
-            .FirstOrDefault(b => b.Id == id);
+        var boleto = _context.Boletos.FirstOrDefault(b => b.Id == id);
 
         if (boleto == null)
             return null;
@@ -26,7 +24,7 @@ public class BoletoService : IBoletoService
 
     public BoletoDto Create(BoletoDto boletoDto)
     {
-        var banco = _context.Bancos.Find(boletoDto.BancoId);
+        var banco = _context.Bancos.FirstOrDefault(b => b.Id == boletoDto.BancoId);
         if (banco == null)
             throw new KeyNotFoundException("Banco não encontrado");
 

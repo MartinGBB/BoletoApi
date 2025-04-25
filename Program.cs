@@ -4,10 +4,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configuração DB
 DotNetEnv.Env.Load();
-Console.WriteLine("DATABASE_CONNECTION_STRING");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+Console.WriteLine($"Connection String: {Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")}");
 builder.Services.AddAutoMapper(typeof(Program));
 
 // Serviços

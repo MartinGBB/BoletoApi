@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class Boleto
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public string NomePagador { get; set; } = string.Empty;
     public string CpfCnpjPagador { get; set; } = string.Empty;
