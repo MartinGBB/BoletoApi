@@ -5,12 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 public class BoletoController : ControllerBase
 {
     private readonly IBoletoService _boletoService;
-    private readonly IBancoService _bancoService;
 
     public BoletoController(IBoletoService boletoService, IBancoService bancoService)
     {
         _boletoService = boletoService;
-        _bancoService = bancoService;
     }
 
     [HttpGet("{id}")]
@@ -26,11 +24,14 @@ public class BoletoController : ControllerBase
     [HttpPost]
     public IActionResult CreateBoleto(Boleto boleto)
     {
-        var banco = _bancoService.GetById(boleto.BancoId);
-        if (banco == null || banco.Id == 0)
-            return NotFound("Banco não encontrado.");
-
-        _boletoService.Create(boleto);
-        return CreatedAtAction(nameof(GetBoleto), new { id = boleto.Id }, boleto);
+        try
+        {
+            var createdBoleto = _boletoService.Create(boleto);
+            return CreatedAtAction(nameof(GetBoleto), new { id = createdBoleto.Id }, createdBoleto);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

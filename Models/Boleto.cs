@@ -9,4 +9,5 @@ public class Boleto
     public DateTime DataVencimento { get; set; }
     public string Observacao { get; set; } = string.Empty;
     public int BancoId { get; set; }
+    public Banco Banco { get; set; }
 }
