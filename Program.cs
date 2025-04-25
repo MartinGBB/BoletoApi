@@ -3,10 +3,14 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuração DB
+DotNetEnv.Env.Load();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddAutoMapper(typeof(Program));
+Console.WriteLine($"Connection String: {Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")}");
+// builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Serviços
 builder.Services.AddScoped<IBoletoService, BoletoService>();

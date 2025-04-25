@@ -1,5 +1,5 @@
 public interface IBoletoService
 {
-    Boleto GetById(int id);
-    void Create(Boleto boleto);
+    BoletoDto GetById(int id);
+    BoletoDto Create(BoletoDto boleto);
 }
