@@ -16,7 +16,7 @@ public class BoletoController : ControllerBase
     {
         var boleto = _boletoService.GetById(id);
         if (boleto == null)
-            return NotFound(new { message = "Boleto não encontrado.", erro = 404 });
+            return NotFound(new { message = "Boleto não encontrado.", status = 404 });
 
         return Ok(boleto);
     }
@@ -35,11 +35,11 @@ public class BoletoController : ControllerBase
         }
         catch (KeyNotFoundException ex)
         {
-            return NotFound(new { message = ex.Message, erro = 404 });
+            return NotFound(new { message = ex.Message, status = 404 });
         }
         catch (Exception e)
         {
-            return StatusCode(500, new { message = "Ocorreu um erro interno no servidor: " + e.Message, erro = 500 });
+            return StatusCode(500, new { message = "Ocorreu um erro interno no servidor: " + e.Message, status = 500 });
         }
     }
 

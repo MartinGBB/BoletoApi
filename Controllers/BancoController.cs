@@ -23,7 +23,7 @@ public class BancoController : ControllerBase
     {
         var banco = _bancoService.GetByCodigo(codigo);
         if (banco == null)
-            return NotFound(new { message = "Banco não encontrado.", erro = 404 });
+            return NotFound(new { message = "Banco não encontrado.", status = 404 });
 
         return Ok(banco);
     }
@@ -41,11 +41,11 @@ public class BancoController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
-            return Conflict(new { message = ex.Message });
+            return Conflict(new { message = ex.Message, status = 409 });
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "Ocorreu um erro interno no servidor: " + ex.Message, erro = 500 });
+            return StatusCode(500, new { message = "Ocorreu um erro interno no servidor: " + ex.Message, status = 500 });
         }
     }
 }
