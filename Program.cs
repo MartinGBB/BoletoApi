@@ -16,7 +16,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IBoletoService, BoletoService>();
 builder.Services.AddScoped<IBancoService, BancoService>();
 
-builder.Services.AddControllersWithViews();  // MVC
+builder.Services.AddControllers();
 
 // Swagger
 builder.Services.AddSwaggerGen();

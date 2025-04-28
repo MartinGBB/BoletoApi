@@ -23,7 +23,7 @@ public class BoletoService : IBoletoService
         return _mapper.Map<BoletoDto>(boleto);
     }
 
-    public BoletoDto Create(BoletoDto boletoDto)
+    public BoletoDto Create(BoletoCreateDto boletoDto)
     {
         var banco = _context.Bancos.FirstOrDefault(b => b.Id == boletoDto.BancoId);
         if (banco == null)
