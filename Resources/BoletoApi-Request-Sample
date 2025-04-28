@@ -1,0 +1,159 @@
+type: collection.insomnia.rest/5.0
+name: BoletoApi
+meta:
+  id: wrk_fa88acb17c304db4b5ba88de7680d348
+  created: 1745551163337
+  modified: 1745551163337
+collection:
+  - name: Banco
+    meta:
+      id: fld_8cae1f90f6384527ab3cec26f29641d0
+      created: 1745551198450
+      modified: 1745808747376
+      sortKey: -1745551198450
+    children:
+      - url: https://localhost:7271/api/banco
+        name: Todos
+        meta:
+          id: req_bf32d06de11a44e1aa3d8c3c3b3b9d36
+          created: 1745567719590
+          modified: 1745808759177
+          isPrivate: false
+          sortKey: -1745567719590
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: https://localhost:7271/api/Banco
+        name: Cadastra
+        meta:
+          id: req_8d1d72c5a6714d54a5ae61630e596fae
+          created: 1745567785947
+          modified: 1745819636747
+          isPrivate: false
+          sortKey: -1745567719690
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"Nome": "Itaú",
+            	"Codigo": "001",
+            	"PercentualJuros": 10
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: https://localhost:7271/api/banco/001
+        name: Busca por Code
+        meta:
+          id: req_4a0d4fafbbf84d05b414027a3a1b5f12
+          created: 1745570422928
+          modified: 1745819641838
+          isPrivate: false
+          sortKey: -1745567719640
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Boleto
+    meta:
+      id: fld_2033fa54d21d4b2598e900c87bfe61aa
+      created: 1745551208149
+      modified: 1745808736322
+      sortKey: -1745551208149
+    children:
+      - url: https://localhost:7271/api/boleto/1
+        name: Busca por ID
+        meta:
+          id: req_2fcbf48f38d5400187c352a7c7d827c9
+          created: 1745551168103
+          modified: 1745819618644
+          isPrivate: false
+          sortKey: -1745553563016
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: https://localhost:7271/api/boleto
+        name: Cadastra
+        meta:
+          id: req_befa5602f6d241458cf309121e9d9a29
+          created: 1745553589873
+          modified: 1745819613690
+          isPrivate: false
+          sortKey: -1745553563066
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "nomePagador": "Maria da Silva",
+              "cpfCnpjPagador": "16492778901",
+              "nomeBeneficiario": "Empresa ABC Ltda",
+              "cpfCnpjBeneficiario": "12342318000199",
+              "valor": 2000.00,
+              "dataVencimento": "2024-05-10",
+              "observacao": "Pagamento referente ao serviço prestado",
+              "bancoId": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_a7e2d307c8debf3d50f5b4b5643335b2009f83e7
+    created: 1745551163345
+    modified: 1745551163345
+environments:
+  name: Base Environment
+  meta:
+    id: env_a7e2d307c8debf3d50f5b4b5643335b2009f83e7
+    created: 1745551163342
+    modified: 1745551163342
+    isPrivate: false
