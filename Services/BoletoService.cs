@@ -20,10 +20,16 @@ public class BoletoService : IBoletoService
         if (boleto == null)
             return null;
 
+        var banco = _context.Bancos.FirstOrDefault(b => b.Id == boleto.BancoId);
+        if (banco == null) throw new ValidationException($"Banco com id {boleto.BancoId} não encontrado.");
+
+        if (boleto.DataVencimento < DateTime.Now)
+            boleto.Valor += boleto.Valor * banco.PercentualJuros / 100;
+
         return _mapper.Map<BoletoDto>(boleto);
     }
 
-    public BoletoDto Create(BoletoDto boletoDto)
+    public BoletoDto Create(BoletoCreateDto boletoDto)
     {
         var banco = _context.Bancos.FirstOrDefault(b => b.Id == boletoDto.BancoId);
         if (banco == null)
@@ -37,9 +43,6 @@ public class BoletoService : IBoletoService
             throw new ValidationException("Dados inválidos: " + string.Join(", ", validationResults.Select(v => v.ErrorMessage)));
 
         boleto.DataVencimento = boleto.DataVencimento.ToUniversalTime();
-        if (boleto.DataVencimento < DateTime.Now)
-            boleto.Valor += banco.PercentualJuros;
-
         boleto.Banco = banco;
 
         _context.Boletos.Add(boleto);

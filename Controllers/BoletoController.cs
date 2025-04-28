@@ -16,44 +16,30 @@ public class BoletoController : ControllerBase
     {
         var boleto = _boletoService.GetById(id);
         if (boleto == null)
-            return NotFound();
+            return NotFound(new { message = "Boleto não encontrado.", status = 404 });
 
         return Ok(boleto);
     }
 
     [HttpPost]
-    public IActionResult Criar(BoletoDto boleto)
+    public IActionResult Criar(BoletoCreateDto boleto)
     {
         try
         {
-            if (!ModelState.IsValid)
-            {
-                var firstError = ModelState.Values.SelectMany(v => v.Errors).FirstOrDefault();
-                if (firstError != null)
-                {
-                    var errorMessage = $"O campo {firstError.Exception?.Source ?? firstError.ErrorMessage}";
-                    return BadRequest(new
-                    {
-                        type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                        title = "One or more validation errors occurred.",
-                        status = 400,
-                        traceId = HttpContext.TraceIdentifier,
-                        errors = new { firstError.ErrorMessage }
-                    });
-                }
-                return BadRequest("Dados inválidos.");
-            }
-
             var createdBoleto = _boletoService.Create(boleto);
-            return CreatedAtAction(nameof(BuscarPorId), new { id = createdBoleto.Id }, createdBoleto);
+            return CreatedAtAction(
+                nameof(BuscarPorId),
+                new { id = createdBoleto.Id },
+                new { message = $"Boleto criado com o ID: {createdBoleto.Id}", status = 201 }
+            );
         }
         catch (KeyNotFoundException ex)
         {
-            return NotFound(ex.Message);
+            return NotFound(new { message = ex.Message, status = 404 });
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            return StatusCode(500, "Erro inesperado: " + ex.Message);
+            return StatusCode(500, new { message = "Ocorreu um erro interno no servidor: " + e.Message, status = 500 });
         }
     }
 

@@ -4,19 +4,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configuração DB
 DotNetEnv.Env.Load();
+string? connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
+
+if (string.IsNullOrEmpty(connectionString))
+    throw new InvalidOperationException("A variável de ambiente DATABASE_CONNECTION_STRING não foi definida.");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
-Console.WriteLine($"Connection String: {Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")}");
-// builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Serviços
 builder.Services.AddScoped<IBoletoService, BoletoService>();
 builder.Services.AddScoped<IBancoService, BancoService>();
 
-builder.Services.AddControllersWithViews();  // MVC
+builder.Services.AddControllers();
 
 // Swagger
 builder.Services.AddSwaggerGen();

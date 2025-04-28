@@ -23,15 +23,29 @@ public class BancoController : ControllerBase
     {
         var banco = _bancoService.GetByCodigo(codigo);
         if (banco == null)
-            return NotFound();
+            return NotFound(new { message = "Banco não encontrado.", status = 404 });
 
         return Ok(banco);
     }
 
     [HttpPost]
-    public IActionResult Criar(BancoDto banco)
+    public IActionResult Criar(BancoCreateDto banco)
     {
-        _bancoService.Create(banco);
-        return CreatedAtAction(nameof(BuscarPorCodigo), new { codigo = banco.Codigo }, banco);
+        try
+        {
+            var createdBanco = _bancoService.Create(banco);
+            return CreatedAtAction(
+                nameof(BuscarPorCodigo),
+                new { codigo = createdBanco.Codigo },
+                new { message = $"Banco criado com o ID: {createdBanco.Id}", status = 201 });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message, status = 409 });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Ocorreu um erro interno no servidor: " + ex.Message, status = 500 });
+        }
     }
 }
