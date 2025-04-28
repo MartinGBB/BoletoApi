@@ -32,11 +32,17 @@ public class BancoService : IBancoService
     }
 
 
-    public void Create(BancoDto bancoDto)
+    public BancoDto Create(BancoCreateDto bancoDto)
     {
+        var bancoExistente = _context.Bancos.FirstOrDefault(b => b.Codigo == bancoDto.Codigo);
+        if (bancoExistente != null)
+            throw new InvalidOperationException("Já existe um banco com este código.");
+
         var banco = _mapper.Map<Banco>(bancoDto);
 
         _context.Bancos.Add(banco);
         _context.SaveChanges();
+
+        return _mapper.Map<BancoDto>(banco);
     }
 }
