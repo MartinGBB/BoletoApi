@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 public class BoletoCreateDto
 {
@@ -18,6 +19,7 @@ public class BoletoCreateDto
     public decimal Valor { get; set; }
 
     [Required(ErrorMessage = "A Data de Vencimento é obrigatória.")]
+    [JsonConverter(typeof(DateTimeToIso8601Converter))]
     public DateTime DataVencimento { get; set; }
 
     [Required(ErrorMessage = "A Observação é obrigatória.")]
