@@ -9,5 +9,8 @@ public class MappingProfile : Profile
 
         CreateMap<BoletoDto, Boleto>();
         CreateMap<Boleto, BoletoDto>();
+
+        CreateMap<BoletoCreateDto, Boleto>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
     }
 }

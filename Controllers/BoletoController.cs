@@ -16,26 +16,30 @@ public class BoletoController : ControllerBase
     {
         var boleto = _boletoService.GetById(id);
         if (boleto == null)
-            return NotFound();
+            return NotFound(new { message = "Boleto não encontrado.", erro = 404 });
 
         return Ok(boleto);
     }
 
     [HttpPost]
-    public IActionResult Criar(BoletoDto boleto)
+    public IActionResult Criar(BoletoCreateDto boleto)
     {
         try
         {
             var createdBoleto = _boletoService.Create(boleto);
-            return CreatedAtAction(nameof(BuscarPorId), new { id = createdBoleto.Id }, createdBoleto);
+            return CreatedAtAction(
+                nameof(BuscarPorId),
+                new { id = createdBoleto.Id },
+                new { message = $"Boleto criado com o ID: {createdBoleto.Id}", status = 201 }
+            );
         }
         catch (KeyNotFoundException ex)
         {
             return NotFound(new { message = ex.Message, erro = 404 });
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            return StatusCode(500, new { message = "Ocorreu um erro interno no servidor.", erro = 500 });
+            return StatusCode(500, new { message = "Ocorreu um erro interno no servidor: " + e.Message, erro = 500 });
         }
     }
 
